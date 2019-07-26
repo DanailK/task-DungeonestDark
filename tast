@@ -1,0 +1,68 @@
+using System;
+using System.Linq;
+
+namespace DungeonestDark
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var input = Console.ReadLine().Split("|").ToList();
+            int health = 100;
+            int coins = 0;
+            int num = 0;
+            foreach (var item in input)
+            {
+                num = num + 1;
+                var room = item.Split().ToList();
+                if (room[0] == "potion")
+                {
+                    int addHealth = int.Parse(room[1]);
+                    //health = health + addHealth;
+                    int addedHealth=addHealth ;
+                    if (health +addHealth >100)
+                    {
+                        addedHealth = 100 - health;
+                    }
+                    health = health + addedHealth;
+                    if (health > 100)
+                    {
+                        health = 100;
+                    }
+                    Console.WriteLine($"You healed for {addedHealth} hp.");
+                    Console.WriteLine($"Current health: {health} hp.");
+                }
+                else if (room[0] == "chest" && health > 0)
+                {
+                    coins = coins + int.Parse(room[1]);
+                    Console.WriteLine($"You found {room[1]} coins.");
+
+                }
+                else
+                {
+                    int monstar = int.Parse(room[1]);
+                    health = health - monstar;
+                    if (health > 0)
+                    {
+                        Console.WriteLine($"You slayed {room[0]}.");
+                    }
+                    else if (health <= 0)
+                    {
+                        Console.WriteLine($"You died! Killed by {room[0]}.");
+                        Console.WriteLine($"Best room: {num}");
+                        break;
+                    }
+                }
+
+            }
+            if (health > 0 && num > 0)
+            {
+                Console.WriteLine($"You've made it!");
+                Console.WriteLine($"Coins: {coins}");
+                Console.WriteLine($"Health: {health}");
+            }
+        
+            
+        }
+    }
+}
